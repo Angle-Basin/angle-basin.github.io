@@ -58,6 +58,7 @@ export function createRenderer(canvas?: HTMLCanvasElement): RendererContext {
   if (!canvas) {
     document.body.prepend(renderer.domElement);
   }
+  renderer.domElement.style.zIndex = "0";
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(BG_COLOR);

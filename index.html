@@ -120,6 +120,7 @@
         inset: 0;
         width: 100%;
         height: 100%;
+        z-index: 0;
       }
       #overlay {
         position: fixed;
@@ -131,7 +132,8 @@
         align-items: center;
         padding-bottom: max(8vh, calc(env(safe-area-inset-bottom, 0px) + 1.5rem));
         pointer-events: none;
-        z-index: 10;
+        z-index: 100;
+        isolation: isolate;
         background: linear-gradient(transparent 0%, rgba(10, 10, 12, 0.6) 40%, rgba(10, 10, 12, 0.85) 100%);
         padding-top: max(6vh, env(safe-area-inset-top, 0px));
       }
@@ -145,28 +147,125 @@
       }
       #links {
         display: flex;
+        align-items: baseline;
         gap: 4em;
         pointer-events: auto;
+        position: relative;
+        z-index: 1;
       }
-      #links a {
+      #links .nav-link {
+        box-sizing: border-box;
         font-size: clamp(10px, 2.6vw, 11px);
+        font-weight: inherit;
+        line-height: 1.3;
         letter-spacing: 0.35em;
         text-transform: lowercase;
-        text-decoration: none;
         color: #c8c0d0;
         opacity: 0.4;
         transition: opacity 0.8s ease;
         padding: 0.85em 0.5em;
         margin: -0.85em -0.5em;
         -webkit-tap-highlight-color: transparent;
+        cursor: pointer;
+        touch-action: manipulation;
       }
-      #links a:hover {
+      #links a.nav-link {
+        text-decoration: none;
+      }
+      #links button.nav-link {
+        all: unset;
+        box-sizing: border-box;
+        display: inline;
+        font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+        font-size: clamp(10px, 2.6vw, 11px);
+        font-weight: inherit;
+        line-height: 1.3;
+        letter-spacing: 0.35em;
+        text-transform: lowercase;
+        color: #c8c0d0;
+        opacity: 0.4;
+        transition: opacity 0.8s ease;
+        padding: 0.85em 0.5em;
+        margin: -0.85em -0.5em;
+        -webkit-tap-highlight-color: transparent;
+        cursor: pointer;
+        touch-action: manipulation;
+      }
+      #links .nav-link:hover {
         opacity: 0.8;
       }
-      #links a:focus-visible {
+      #links .nav-link:focus-visible {
         opacity: 0.85;
         outline: 1px solid rgba(200, 192, 208, 0.45);
         outline-offset: 6px;
+      }
+      #about-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 99;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        background: rgba(10, 10, 12, 0.52);
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
+      #about-backdrop[hidden] {
+        display: none !important;
+      }
+      .overlay-stack {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        pointer-events: none;
+      }
+      #about-panel {
+        pointer-events: auto;
+        position: relative;
+        max-width: min(28rem, 88vw);
+        margin: 0 0 1.1rem;
+        padding: 1.5rem 1.75rem 1.35rem;
+        text-align: center;
+        background: rgba(10, 10, 12, 0.78);
+        box-shadow: 0 0 0 1px rgba(200, 192, 208, 0.1);
+      }
+      #about-panel[hidden] {
+        display: none !important;
+      }
+      .about-copy {
+        font-size: clamp(10px, 2.65vw, 11px);
+        line-height: 1.75;
+        letter-spacing: 0.06em;
+        opacity: 0.88;
+      }
+      .about-copy p + p {
+        margin-top: 0.85rem;
+      }
+      .about-close {
+        position: absolute;
+        top: 0.4rem;
+        right: 0.45rem;
+        padding: 0.35rem 0.45rem;
+        margin: 0;
+        border: none;
+        background: none;
+        color: #c8c0d0;
+        font: inherit;
+        font-size: 1rem;
+        line-height: 1;
+        opacity: 0.4;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        transition: opacity 0.4s ease;
+      }
+      .about-close:hover {
+        opacity: 0.85;
+      }
+      .about-close:focus-visible {
+        opacity: 0.9;
+        outline: 1px solid rgba(200, 192, 208, 0.45);
+        outline-offset: 2px;
       }
       .sr-only {
         position: absolute;
@@ -186,23 +285,114 @@
       Angle Basin is the ambient techno project of producer Aaron Steven White, recording at Sink State in Rochester, NY. 
       Dissonant harmonies, cavernous spaces, and dense angular grooves. Debut album Eigengrau out 7 Aug 2026.
     </p>
+    <div id="about-backdrop" hidden aria-hidden="true"></div>
     <div id="overlay">
-      <h1 id="title">angle basin</h1>
-      <nav id="links" aria-label="Bandcamp">
-        <a
-          href="https://anglebasin.bandcamp.com/album/eigengrau"
-          rel="noopener noreferrer"
-          title="Eigengrau on Bandcamp"
-          >music</a
+      <div class="overlay-stack">
+        <div
+          id="about-panel"
+          hidden
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="about-label"
         >
-        <a
-          href="https://anglebasin.bandcamp.com/merch"
-          rel="noopener noreferrer"
-          title="Angle Basin merch on Bandcamp"
-          >merch</a
-        >
-      </nav>
+          <h2 id="about-label" class="sr-only">About</h2>
+          <button type="button" class="about-close" aria-label="Close">×</button>
+          <div class="about-copy">
+            <p>
+              Angle Basin is the ambient techno project of producer Aaron Steven White, recording at Sink State in Rochester, NY. 
+            </p>
+            <p>
+              The project is founded on dissonant harmonies, cavernous spaces, and dense angular grooves.
+            </p>
+            <p>The debut album <i>Eigengrau</i> is out 7 Aug 2026.</p>
+          </div>
+        </div>
+        <h1 id="title">angle basin</h1>
+        <nav id="links" aria-label="Site">
+          <a
+            class="nav-link"
+            href="https://anglebasin.bandcamp.com/album/eigengrau"
+            rel="noopener noreferrer"
+            title="Eigengrau on Bandcamp"
+            >music</a
+          >
+          <a
+            class="nav-link"
+            href="https://anglebasin.bandcamp.com/merch"
+            rel="noopener noreferrer"
+            title="Angle Basin merch on Bandcamp"
+            >merch</a
+          >
+          <button
+            type="button"
+            class="nav-link"
+            id="about-open"
+            title="About Angle Basin"
+            aria-haspopup="dialog"
+            aria-expanded="false"
+          >
+            about
+          </button>
+        </nav>
+      </div>
     </div>
+    <!-- About modal: inline so it runs even if the WebGL bundle fails to load or execute. -->
+    <script>
+      (function () {
+        var openBtn = document.getElementById("about-open");
+        var panel = document.getElementById("about-panel");
+        var backdrop = document.getElementById("about-backdrop");
+        var closeBtn = panel ? panel.querySelector(".about-close") : null;
+        if (!openBtn || !panel || !backdrop || !closeBtn) return;
+
+        function isOpen() {
+          return !panel.hidden;
+        }
+
+        function setExpanded(on) {
+          openBtn.setAttribute("aria-expanded", on ? "true" : "false");
+        }
+
+        function closeModal() {
+          if (!isOpen()) return;
+          panel.hidden = true;
+          backdrop.hidden = true;
+          setExpanded(false);
+          try {
+            openBtn.focus();
+          } catch (_) {}
+        }
+
+        function openModal() {
+          panel.hidden = false;
+          backdrop.hidden = false;
+          setExpanded(true);
+          try {
+            closeBtn.focus();
+          } catch (_) {}
+        }
+
+        function onToggle(ev) {
+          if (ev) ev.preventDefault();
+          if (isOpen()) closeModal();
+          else openModal();
+        }
+
+        openBtn.addEventListener("click", onToggle);
+        closeBtn.addEventListener("click", function () {
+          closeModal();
+        });
+        backdrop.addEventListener("click", function () {
+          closeModal();
+        });
+        window.addEventListener("keydown", function (e) {
+          if (e.key === "Escape" && isOpen()) {
+            e.preventDefault();
+            closeModal();
+          }
+        });
+      })();
+    </script>
     <script type="module" src="/src/landing/main.ts"></script>
   </body>
 </html>

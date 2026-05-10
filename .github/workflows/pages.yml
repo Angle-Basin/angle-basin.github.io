@@ -29,7 +29,8 @@ jobs:
       - name: Assert published bundle exists (not dev index.html)
         run: |
           test -f dist/index.html || (echo "missing dist/index.html" && exit 1)
-          grep -q 'assets/index-' dist/index.html || (echo "dist/index.html still references dev /src/?" ; cat dist/index.html | grep script || true; exit 1)
+          grep -qE '\./assets/[^" ]+\.js' dist/index.html || (echo "dist/index.html missing hashed ./assets/*.js bundle" ; cat dist/index.html | grep script || true; exit 1)
+          grep -q '/src/' dist/index.html && (echo "dist/index.html still references dev /src/" ; exit 1) || true
           ls -la dist/assets/*.js | head -5
       - uses: actions/upload-pages-artifact@v3
         with:
