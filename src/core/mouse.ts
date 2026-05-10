@@ -19,6 +19,8 @@ function smoothExp(current: number, target: number, dt: number, halfLife: number
   return current + (target - current) * factor;
 }
 
+export type ViewportSize = { width: number; height: number };
+
 export class MouseTracker {
   private rawX = 0;
   private rawY = 0;
@@ -27,7 +29,7 @@ export class MouseTracker {
 
   readonly state: MouseState = { x: 0, y: 0, speed: 0, stillness: 10 };
 
-  constructor() {
+  constructor(private readonly getViewport?: () => ViewportSize) {
     window.addEventListener("mousemove", (e) => this.onMove(e.clientX, e.clientY));
     window.addEventListener(
       "touchstart",
@@ -43,9 +45,16 @@ export class MouseTracker {
     }, { passive: true });
   }
 
+  private viewport(): ViewportSize {
+    const v = this.getViewport?.();
+    if (v && v.width > 0 && v.height > 0) return v;
+    return { width: window.innerWidth, height: window.innerHeight };
+  }
+
   private onMove(cx: number, cy: number): void {
-    const newX = (cx / window.innerWidth) * 2 - 1;
-    const newY = -((cy / window.innerHeight) * 2 - 1);
+    const { width, height } = this.viewport();
+    const newX = (cx / width) * 2 - 1;
+    const newY = -((cy / height) * 2 - 1);
     const dx = newX - this.rawX;
     const dy = newY - this.rawY;
     this.speedAccum += Math.sqrt(dx * dx + dy * dy);

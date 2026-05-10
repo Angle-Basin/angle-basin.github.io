@@ -45,9 +45,18 @@ export class MotionInput {
     canvas.addEventListener("pointercancel", this.onPointerUp, { passive: true });
   }
 
+  /** Same normalization as the striation shader / ortho camera (canvas laid-out size, not window.inner*). */
+  private normFromClient(clientX: number, clientY: number): { nx: number; ny: number } {
+    const w = Math.max(1, this.canvas.clientWidth);
+    const h = Math.max(1, this.canvas.clientHeight);
+    return {
+      nx: (clientX / w) * 2 - 1,
+      ny: -((clientY / h) * 2 - 1),
+    };
+  }
+
   private onPointerDown = (e: PointerEvent): void => {
-    const nx = (e.clientX / window.innerWidth) * 2 - 1;
-    const ny = -((e.clientY / window.innerHeight) * 2 - 1);
+    const { nx, ny } = this.normFromClient(e.clientX, e.clientY);
     this.clickX = nx;
     this.clickY = ny;
     this.clickTarget = 1;

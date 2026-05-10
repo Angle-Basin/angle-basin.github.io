@@ -10,6 +10,42 @@ export interface RendererContext {
   resolution: THREE.Vector2;
 }
 
+/** Fallback when the canvas has not been laid out yet (first paint on some mobile browsers). */
+function fallbackViewportCss(): { w: number; h: number } {
+  const el = document.documentElement;
+  const vv = window.visualViewport;
+  const w = Math.max(
+    1,
+    Math.round(vv?.width ?? el.clientWidth ?? window.innerWidth),
+  );
+  const h = Math.max(
+    1,
+    Math.round(vv?.height ?? el.clientHeight ?? window.innerHeight),
+  );
+  return { w, h };
+}
+
+/** Match drawing buffer and ortho frustum to the canvas’s laid-out CSS size (fixes mobile “narrow strip” bugs). */
+export function resizeRendererToCanvas(ctx: RendererContext): void {
+  const { renderer, camera, resolution } = ctx;
+  const canvas = renderer.domElement;
+  let w = Math.max(1, Math.round(canvas.clientWidth));
+  let h = Math.max(1, Math.round(canvas.clientHeight));
+  if (w <= 1 || h <= 1) {
+    const fb = fallbackViewportCss();
+    w = fb.w;
+    h = fb.h;
+  }
+  const a = w / h;
+  renderer.setSize(w, h, false);
+  camera.left = -a;
+  camera.right = a;
+  camera.top = 1;
+  camera.bottom = -1;
+  camera.updateProjectionMatrix();
+  resolution.set(w, h);
+}
+
 export function createRenderer(canvas?: HTMLCanvasElement): RendererContext {
   const renderer = new THREE.WebGLRenderer({
     canvas,
@@ -17,7 +53,6 @@ export function createRenderer(canvas?: HTMLCanvasElement): RendererContext {
     alpha: false,
   });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor(BG_COLOR, 1);
 
   if (!canvas) {
@@ -27,35 +62,37 @@ export function createRenderer(canvas?: HTMLCanvasElement): RendererContext {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(BG_COLOR);
 
-  // orthographic camera: coordinates in [-1, 1] range
-  const aspect = window.innerWidth / window.innerHeight;
-  const camera = new THREE.OrthographicCamera(
-    -aspect,
-    aspect,
-    1,
-    -1,
-    0.1,
-    100,
-  );
+  const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 100);
   camera.position.z = 1;
 
-  const resolution = new THREE.Vector2(window.innerWidth, window.innerHeight);
+  const resolution = new THREE.Vector2(1, 1);
   const clock = new THREE.Clock();
 
-  window.addEventListener("resize", () => {
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    const a = w / h;
-    renderer.setSize(w, h);
-    camera.left = -a;
-    camera.right = a;
-    camera.top = 1;
-    camera.bottom = -1;
-    camera.updateProjectionMatrix();
-    resolution.set(w, h);
+  const ctx: RendererContext = { renderer, scene, camera, clock, resolution };
+
+  function onViewportChanged(): void {
+    resizeRendererToCanvas(ctx);
+  }
+
+  window.addEventListener("resize", onViewportChanged);
+  window.addEventListener("orientationchange", onViewportChanged);
+
+  const vv = window.visualViewport;
+  if (vv) {
+    vv.addEventListener("resize", onViewportChanged);
+    vv.addEventListener("scroll", onViewportChanged);
+  }
+
+  const ro = new ResizeObserver(onViewportChanged);
+  ro.observe(renderer.domElement);
+
+  onViewportChanged();
+  requestAnimationFrame(() => {
+    onViewportChanged();
+    requestAnimationFrame(onViewportChanged);
   });
 
-  return { renderer, scene, camera, clock, resolution };
+  return ctx;
 }
 
 export function startLoop(

@@ -49,10 +49,13 @@ function buildStriationGeometry(aspect: number): THREE.BufferGeometry {
 
 function init(): void {
   const ctx = createRenderer();
-  const mouse = new MouseTracker();
+  const mouse = new MouseTracker(() => {
+    const el = ctx.renderer.domElement;
+    const w = Math.max(1, el.clientWidth);
+    const h = Math.max(1, el.clientHeight);
+    return { width: w, height: h };
+  });
   const motion = new MotionInput(ctx.renderer.domElement);
-
-  const aspect = window.innerWidth / window.innerHeight;
 
   const uniforms = {
     uTime: { value: 0 },
@@ -60,7 +63,7 @@ function init(): void {
     uMouseY: { value: 0 },
     uSpeed: { value: 0 },
     uStillness: { value: 10 },
-    uAspect: { value: aspect },
+    uAspect: { value: 1 },
     uClickImpulse: { value: 0 },
     uClickPos: { value: new THREE.Vector2(0, 0) },
     uDrag: { value: 0 },
@@ -78,20 +81,15 @@ function init(): void {
     depthWrite: false,
   });
 
-  const geometry = buildStriationGeometry(aspect);
+  const aspect0 = ctx.camera.right;
+  uniforms.uAspect.value = aspect0;
+
+  const geometry = buildStriationGeometry(aspect0);
   const mesh = new THREE.LineSegments(geometry, material);
   ctx.scene.add(mesh);
 
-  // rebuild geometry on resize
-  window.addEventListener("resize", () => {
-    const a = window.innerWidth / window.innerHeight;
-    uniforms.uAspect.value = a;
-    const newGeo = buildStriationGeometry(a);
-    mesh.geometry.dispose();
-    mesh.geometry = newGeo;
-  });
-
   startLoop(ctx, (_dt, elapsed) => {
+    uniforms.uAspect.value = ctx.camera.right;
     const m = mouse.update(_dt);
     motion.update(_dt);
     uniforms.uTime.value = elapsed;
