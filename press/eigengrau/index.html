@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Angle Basin / Eigengrau Press</title>
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
+    <meta name="theme-color" content="#0a0a0c" />
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: #0a0a0c;
+        color: #c8c0d0;
+        font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+        font-size: 12px;
+        line-height: 1.8;
+      }
+      a {
+        color: #c8c0d0;
+        text-decoration: none;
+        transition: opacity 0.4s ease;
+      }
+      a:hover,
+      a:focus-visible {
+        opacity: 1 !important;
+      }
+      .page {
+        max-width: 34rem;
+        margin: 0 auto;
+        padding: 4.5rem 1.5rem 7rem;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 6rem;
+      }
+      header a,
+      header span {
+        font-size: 10px;
+        letter-spacing: 0.35em;
+        text-transform: lowercase;
+        opacity: 0.4;
+      }
+
+      h1 {
+        font-size: 12px;
+        font-weight: inherit;
+        letter-spacing: 0.45em;
+        text-transform: uppercase;
+        opacity: 0.85;
+      }
+      .release-line {
+        margin-top: 0.5rem;
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        text-transform: lowercase;
+        opacity: 0.45;
+      }
+
+      .art {
+        margin: 3.5rem 0 0;
+        max-width: 21rem;
+      }
+      .art img {
+        display: block;
+        width: 100%;
+      }
+
+      section {
+        margin-top: 5.5rem;
+      }
+      .section-label {
+        font-size: 10px;
+        letter-spacing: 0.35em;
+        text-transform: lowercase;
+        opacity: 0.4;
+        margin-bottom: 1.6rem;
+      }
+      .copy p {
+        opacity: 0.8;
+        max-width: 32rem;
+      }
+      .copy p + p {
+        margin-top: 1rem;
+      }
+      .copy .muted {
+        opacity: 0.5;
+      }
+
+      .track-note {
+        display: block;
+        padding: 0 0 0.6rem 3.2rem;
+        font-size: 11px;
+        opacity: 0.5;
+        margin-top: -0.25rem;
+      }
+
+      .player {
+        border-top: 1px solid rgba(200, 192, 208, 0.1);
+        border-bottom: 1px solid rgba(200, 192, 208, 0.1);
+        padding: 1.2rem 0;
+      }
+      .player-head {
+        display: flex;
+        align-items: baseline;
+        gap: 1.2rem;
+      }
+      .play-toggle {
+        border: 0;
+        background: none;
+        color: #c8c0d0;
+        font: inherit;
+        font-size: 10px;
+        letter-spacing: 0.35em;
+        text-transform: lowercase;
+        opacity: 0.6;
+        cursor: pointer;
+        padding: 0.4rem 0;
+        min-width: 4.5rem;
+        text-align: left;
+        transition: opacity 0.4s ease;
+      }
+      .play-toggle:hover,
+      .play-toggle:focus-visible {
+        opacity: 1;
+      }
+      .transport {
+        flex: 1;
+        min-width: 0;
+      }
+      .now {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 0.5rem;
+      }
+      #now-playing {
+        text-transform: lowercase;
+        opacity: 0.8;
+      }
+      .time {
+        font-size: 10px;
+        opacity: 0.4;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      #seek {
+        width: 100%;
+        height: 2px;
+        display: block;
+        accent-color: #c8c0d0;
+        cursor: pointer;
+        opacity: 0.6;
+      }
+      .download-current {
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        text-transform: lowercase;
+        opacity: 0.4;
+      }
+      .track-list {
+        list-style: none;
+        margin-top: 1.2rem;
+      }
+      .track-button {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 2.2rem minmax(0, 1fr) auto;
+        gap: 1rem;
+        align-items: baseline;
+        padding: 0.55rem 0;
+        border: 0;
+        background: none;
+        color: #c8c0d0;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+        opacity: 0.45;
+        transition: opacity 0.4s ease;
+      }
+      .track-button:hover,
+      .track-button:focus-visible,
+      .track-button.is-current {
+        opacity: 0.9;
+      }
+      .track-no,
+      .track-duration {
+        font-size: 10px;
+        font-variant-numeric: tabular-nums;
+      }
+      .track-title {
+        text-transform: lowercase;
+      }
+
+      .plain-list {
+        list-style: none;
+      }
+      .plain-list li {
+        opacity: 0.7;
+      }
+      .plain-list li + li {
+        margin-top: 0.2rem;
+      }
+      .plain-list .muted {
+        opacity: 0.55;
+      }
+      .asset-links a {
+        opacity: 0.7;
+      }
+      .asset-links .dims {
+        font-size: 10px;
+        opacity: 0.4;
+        margin-left: 0.8rem;
+      }
+
+      footer {
+        margin-top: 6rem;
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        text-transform: lowercase;
+        opacity: 0.3;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <a href="../../">angle basin</a>
+        <span>press, please do not share</span>
+      </header>
+
+      <h1>Eigengrau</h1>
+      <p class="release-line">angle basin, debut album, 6 november 2026, five tracks, 42:30</p>
+
+      <figure class="art">
+        <img src="../../press/assets/eigengrau-vinyl-mockup.png" alt="Eigengrau vinyl sleeve and record" />
+      </figure>
+
+      <section class="copy" aria-label="About the album">
+        <p class="section-label">album</p>
+        <p>
+          <i>Eigengrau</i> is the debut album from Angle Basin, the ambient techno project of
+          Aaron Steven White, recorded at Sink State in Rochester, NY. Five long-form tracks:
+          sustained harmonic fields, heavy detailed percussion, slow arcs from open suspension
+          into darker, more physical terrain. Mastered by Giuseppe Tillieci (Neel) at Enisslab, Rome.
+        </p>
+        <p class="muted">
+          Reference points: Monolake, Voices from the Lake, Gas.
+        </p>
+      </section>
+
+      <section aria-label="Tracks and private album stream">
+        <p class="section-label">tracks</p>
+        <div class="player">
+          <div class="player-head">
+            <button id="play-toggle" class="play-toggle" type="button" aria-label="Play ink">play</button>
+            <div class="transport">
+              <div class="now">
+                <span id="now-playing">ink</span>
+                <span class="time"><span id="elapsed">0:00</span> / <span id="total">8:48</span></span>
+              </div>
+              <input id="seek" type="range" min="0" max="1000" value="0" aria-label="Seek through current track" />
+            </div>
+            <a id="current-download" class="download-current" href="../../press/audio/01-ink.mp3" download>mp3</a>
+          </div>
+          <ol class="track-list">
+            <li>
+              <button class="track-button is-current" type="button" data-track="0" aria-current="true"><span class="track-no">01</span><span class="track-title">ink</span><span class="track-duration">8:48</span></button>
+              <span class="track-note">Two minutes of beatless pads, one sustained rhythmic section, a slow dissolve.</span>
+            </li>
+            <li>
+              <button class="track-button" type="button" data-track="1"><span class="track-no">02</span><span class="track-title">kin</span><span class="track-duration">7:12</span></button>
+              <span class="track-note">The shortest track; a gentle groove that ends in a long beatless coda.</span>
+            </li>
+            <li>
+              <button class="track-button" type="button" data-track="2"><span class="track-no">03</span><span class="track-title">link</span><span class="track-duration">10:08</span></button>
+              <span class="track-note">The longest track; a nearly unbroken groove from the first minute to the last.</span>
+            </li>
+            <li>
+              <button class="track-button" type="button" data-track="3"><span class="track-no">04</span><span class="track-title">ilk</span><span class="track-duration">7:40</span></button>
+              <span class="track-note">In motion within the first half minute; the beat runs almost the entire track.</span>
+            </li>
+            <li>
+              <button class="track-button" type="button" data-track="4"><span class="track-no">05</span><span class="track-title">kiln</span><span class="track-duration">8:42</span></button>
+              <span class="track-note">Two rhythmic sections split by a thirty second collapse; ends in a long fade to silence.</span>
+            </li>
+          </ol>
+          <audio id="press-audio" preload="metadata"></audio>
+        </div>
+      </section>
+
+      <section aria-label="Credits">
+        <p class="section-label">credits</p>
+        <ul class="plain-list">
+          <li>Written, produced and recorded by Aaron Steven White at Sink State, Rochester, NY</li>
+          <li>Mastered by Giuseppe Tillieci (Neel) at Enisslab, Rome</li>
+          <li class="muted">Self-released 6 November 2026, digital and vinyl</li>
+        </ul>
+      </section>
+
+      <section aria-label="Press assets">
+        <p class="section-label">assets</p>
+        <ul class="plain-list asset-links">
+          <li><a href="../../press/assets/angle-basin-eigengrau-press.zip" download>complete press kit</a><span class="dims">zip, 10 mb</span></li>
+          <li><a href="../../press/assets/eigengrau-cover-3024.png" download>album cover</a><span class="dims">3024 × 3024 png</span></li>
+          <li><a href="../../press/assets/eigengrau-cover-back-3024.png" download>album back cover</a><span class="dims">3024 × 3024 png</span></li>
+          <li><a href="../../press/assets/angle-basin-photo-square-3000.jpg" download>artist photo, square</a><span class="dims">3000 × 3000 jpg</span></li>
+          <li><a href="../../press/assets/angle-basin-photo-4x5-2400x3000.jpg" download>artist photo, 4x5</a><span class="dims">2400 × 3000 jpg</span></li>
+          <li><a href="../../press/assets/eigengrau-vinyl-mockup.png" download>vinyl mockup</a><span class="dims">1024 × 819 png</span></li>
+        </ul>
+      </section>
+
+      <section aria-label="Contact">
+        <p class="section-label">contact</p>
+        <ul class="plain-list">
+          <li><a href="mailto:aaron@anglebas.in?subject=Angle%20Basin%20%2F%20Eigengrau%20press">aaron@anglebas.in</a></li>
+          <li class="muted">Interviews, lossless masters and additional artwork on request.</li>
+        </ul>
+      </section>
+
+      <footer>angle basin, press use only, 2026</footer>
+    </div>
+    <script type="module" src="../../src/press/eigengrau.ts"></script>
+  </body>
+</html>
