@@ -9,7 +9,7 @@
     <title>Angle Basin</title>
     <meta
       name="description"
-      content="Angle Basin is the ambient techno project of producer Aaron Steven White, recording at Sink State in Rochester, NY. Dissonant harmonies, cavernous spaces, and dense angular grooves. Debut album Eigengrau out 7 Aug 2026."
+      content="Angle Basin is the ambient techno project of Aaron Steven White, recording at Sink State in Rochester, NY. The debut album Eigengrau is out 6 Nov 2026."
     />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="theme-color" content="#0a0a0c" />
@@ -21,7 +21,7 @@
     <meta property="og:title" content="Angle Basin" />
     <meta
       property="og:description"
-      content="Angle Basin is the ambient techno project of producer Aaron Steven White, recording at Sink State in Rochester, NY. Dissonant harmonies, cavernous spaces, and dense angular grooves. Debut album Eigengrau out 7 Aug 2026."
+      content="Angle Basin is the ambient techno project of Aaron Steven White, recording at Sink State in Rochester, NY. The debut album Eigengrau is out 6 Nov 2026."
     />
     <meta property="og:image" content="https://anglebas.in/images/og.png" />
     <meta property="og:image:type" content="image/png" />
@@ -35,7 +35,7 @@
     <meta name="twitter:title" content="Angle Basin" />
     <meta
       name="twitter:description"
-      content="Angle Basin is the ambient techno project of producer Aaron Steven White, recording at Sink State in Rochester, NY. Dissonant harmonies, cavernous spaces, and dense angular grooves. Debut album Eigengrau out 7 Aug 2026."
+      content="Angle Basin is the ambient techno project of Aaron Steven White, recording at Sink State in Rochester, NY. The debut album Eigengrau is out 6 Nov 2026."
     />
     <meta name="twitter:image" content="https://anglebas.in/images/og.png" />
     <meta
@@ -51,7 +51,7 @@
             "@id": "https://anglebas.in/#website",
             "url": "https://anglebas.in/",
             "name": "Angle Basin",
-            "description": "Angle Basin is the ambient techno project of producer Aaron Steven White, recording at Sink State in Rochester, NY. Dissonant harmonies, cavernous spaces, and dense angular grooves. Debut album Eigengrau out 7 Aug 2026.",
+            "description": "Angle Basin is the ambient techno project of Aaron Steven White, recording at Sink State in Rochester, NY. The debut album Eigengrau is out 6 Nov 2026.",
             "inLanguage": "en",
             "publisher": { "@id": "https://anglebas.in/#artist" }
           },
@@ -60,7 +60,7 @@
             "@id": "https://anglebas.in/#webpage",
             "url": "https://anglebas.in/",
             "name": "Angle Basin",
-            "description": "Angle Basin is the ambient techno project of producer Aaron Steven White, recording at Sink State in Rochester, NY. Dissonant harmonies, cavernous spaces, and dense angular grooves. Debut album Eigengrau out 7 Aug 2026.",
+            "description": "Angle Basin is the ambient techno project of Aaron Steven White, recording at Sink State in Rochester, NY. The debut album Eigengrau is out 6 Nov 2026.",
             "inLanguage": "en",
             "isPartOf": { "@id": "https://anglebas.in/#website" },
             "about": { "@id": "https://anglebas.in/#artist" },
@@ -76,8 +76,8 @@
             "@id": "https://anglebas.in/#artist",
             "name": "Angle Basin",
             "url": "https://anglebas.in/",
-            "description": "Angle Basin is the ambient techno project of producer Aaron Steven White, recording at Sink State in Rochester, NY. Dissonant harmonies, cavernous spaces, and dense angular grooves. Debut album Eigengrau out 7 Aug 2026.",
-            "sameAs": ["https://anglebasin.bandcamp.com/"],
+            "description": "Angle Basin is the ambient techno project of Aaron Steven White, recording at Sink State in Rochester, NY. The debut album Eigengrau is out 6 Nov 2026.",
+            "sameAs": ["https://anglebasin.bandcamp.com/", "https://www.subvert.fm/angle-basin"],
             "member": [{ "@type": "Person", "name": "Aaron Steven White" }],
             "location": {
               "@type": "Place",
@@ -89,7 +89,7 @@
             "@id": "https://anglebas.in/#album-eigengrau",
             "name": "Eigengrau",
             "url": "https://anglebasin.bandcamp.com/album/eigengrau",
-            "datePublished": "2026-08-07",
+            "datePublished": "2026-11-06",
             "numTracks": 5,
             "byArtist": { "@id": "https://anglebas.in/#artist" }
           }
@@ -137,6 +137,14 @@
         background: linear-gradient(transparent 0%, rgba(10, 10, 12, 0.6) 40%, rgba(10, 10, 12, 0.85) 100%);
         padding-top: max(6vh, env(safe-area-inset-top, 0px));
       }
+      #logo-mark {
+        display: block;
+        width: clamp(38px, 9vw, 48px);
+        height: auto;
+        margin: 0 0 1.6rem;
+        color: #c8c0d0;
+        opacity: 0.5;
+      }
       #title {
         margin: 0 0 2.5em;
         font-size: clamp(11px, 2.8vw, 12px);
@@ -148,10 +156,19 @@
       #links {
         display: flex;
         align-items: baseline;
-        gap: 4em;
+        flex-wrap: wrap;
+        justify-content: center;
+        row-gap: 1.9em;
+        max-width: 92vw;
+        column-gap: clamp(1.8em, 7vw, 4em);
         pointer-events: auto;
         position: relative;
         z-index: 1;
+      }
+      @media (max-width: 480px) {
+        #links {
+          max-width: 280px;
+        }
       }
       #links .nav-link {
         box-sizing: border-box;
@@ -282,8 +299,8 @@
   </head>
   <body>
     <p class="sr-only">
-      Angle Basin is the ambient techno project of producer Aaron Steven White, recording at Sink State in Rochester, NY. 
-      Dissonant harmonies, cavernous spaces, and dense angular grooves. Debut album Eigengrau out 7 Aug 2026.
+      Angle Basin is the ambient techno project of Aaron Steven White, recording at Sink State in Rochester, NY.
+      The debut album Eigengrau is out 6 Nov 2026.
     </p>
     <div id="about-backdrop" hidden aria-hidden="true"></div>
     <div id="overlay">
@@ -299,22 +316,45 @@
           <button type="button" class="about-close" aria-label="Close">×</button>
           <div class="about-copy">
             <p>
-              Angle Basin is the ambient techno project of producer Aaron Steven White, recording at Sink State in Rochester, NY. 
+              Angle Basin is the ambient techno project of Aaron Steven White, recording at Sink State in Rochester, NY.
             </p>
-            <p>
-              The project is founded on dissonant harmonies, cavernous spaces, and dense angular grooves.
-            </p>
-            <p>The debut album <i>Eigengrau</i> is out 7 Aug 2026.</p>
+            <p>The debut album <i>Eigengrau</i> is out 6 Nov 2026.</p>
           </div>
         </div>
+        <svg
+          id="logo-mark"
+          viewBox="0 0 3543.307 3507.874"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <defs>
+            <clipPath id="logo-mark-clip">
+              <rect width="3543.307" height="3507.874" />
+            </clipPath>
+          </defs>
+          <g clip-path="url(#logo-mark-clip)" fill="none" stroke="currentColor" stroke-width="145.83" stroke-linecap="square">
+            <path d="M0,3507.874l1771.654,-1753.937" />
+            <path d="M3543.307,3507.874l-1771.654,-1753.937" />
+            <path d="M0,1753.937l1771.654,1753.937l1771.654,-1753.937" />
+            <path d="M3543.307,0l-1771.654,3507.874" />
+            <path d="M0,0l1771.654,3507.874" />
+          </g>
+        </svg>
         <h1 id="title">angle basin</h1>
         <nav id="links" aria-label="Site">
           <a
             class="nav-link"
             href="https://anglebasin.bandcamp.com/album/eigengrau"
             rel="noopener noreferrer"
-            title="Eigengrau on Bandcamp"
-            >music</a
+            title="Angle Basin on Bandcamp"
+            >bandcamp</a
+          >
+          <a
+            class="nav-link"
+            href="https://www.subvert.fm/angle-basin"
+            rel="noopener noreferrer"
+            title="Angle Basin on Subvert"
+            >subvert</a
           >
           <a
             class="nav-link"
@@ -333,6 +373,12 @@
           >
             about
           </button>
+          <a
+            class="nav-link"
+            href="mailto:aaron@anglebas.in"
+            title="Contact Angle Basin"
+            >contact</a
+          >
         </nav>
       </div>
     </div>
